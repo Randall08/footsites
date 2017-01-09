@@ -1,0 +1,94 @@
+import urllib.request
+import urllib.error
+import urllib.parse
+import re
+
+
+
+# Let's go
+
+"""
+For footlocker, the requestKey will change after you add the item more than twice. It also changes when you add it at
+least one time and when you refresh the page.
+So here the idea is that we load the page once, and add it to cart no more than twice
+No sure if the addToCart request failed it counts.
+The requestKey is within the page source. So we need to find out the product page, then search through the code to find
+out the requestKey, then add to cart. Every time we refresh the page, we need to search for the requestKey.
+"""
+
+"""
+The addToCart Form
+storeCostOfGoods=0.00&lineItemId=&model=262605&requestKey=6n75DDF5A31D6FCD&hasXYPromo=false
+&sameDayDeliveryConfig=false&sku=43392611&the_model_nbr=262605&model_name=Nike+KD+9+-+Men's&skipISA=no&selectedPrice
+=%24149.99&qty=1&size=09.0&fulfillmentType=SHIP_TO_HOME&storeNumber=00000&coreMetricsDo=true&coreMetricsCategory=Add
++to+Wish+List+-+PDP&quantity=1&inlineAddToCart=1
+
+The addToCart url
+http://www.footlocker.com/catalog/miniAddToCart.cfm?secure=0&
+
+Product link
+http://www.footlocker.com/product/model:262605/sku:43392611/nike-kd-9-mens/kevin-durant/red/white/
+"""
+
+
+
+url_footlocker = "http://www.footlocker.com"
+url_footlocker_product_link = "http://www.footlocker.com/product/model:262605/sku:43392611/nike-kd-9-mens/kevin-durant" \
+                              "/red/white/"
+url_footlocker_addToCart_link = "http://www.footlocker.com/catalog/miniAddToCart.cfm?secure=0"
+
+user_Agent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/" \
+             "55.0.2883.5 Safari/537.36"
+
+
+header_footlocker = {"Host": 'www.footlocker.com',
+                     "User-Agent": user_Agent,
+                     "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8"}
+                     # "Accept-Language": "en-US,en;q=0.8"}
+                     # "Cache-Control": "max-age=0"}
+                     # "Connection": "keep-alive",
+                     # "Upgrade-Insecure-Requests": 1}
+
+
+req = urllib.request.Request(url_footlocker_product_link, headers=header_footlocker)
+
+try:
+    res = urllib.request.urlopen(req)
+except Exception as e:
+    print("Cannot process product link")
+    print("Reason is", e.code)
+else:
+    charset = res.headers.get_content_charset()
+    read = res.read().decode(charset)
+    # print(read)
+    pattern = re.compile("var requestKey = \'(.*?)\'")
+    match = re.findall(pattern, read)
+    print(match[0])
+
+    data = {"storeCostOfGoods": 0.00,
+            "sameDayDeliveryConfig": "false",
+            "sku": 43392611,
+            "the_model_nbr": 262605,
+            "requestKey": match[0],
+            "hasXYPromo": "false",
+            "fulfillmentType": "SHIP_TO_HOME",
+            "storeNumber": 00000,
+            "model_name": "Nike+KD+9+-+Men\'s",
+            "skipISA": "no",
+            "selectedPrice": "$149",
+            "qty": 1,
+            "size": 09.0,
+            "coreMetricsCategory": "Add+to+Wish+List+-+PDP",
+            "quantity": 1,
+            "inlineAddToCart": 1,
+            }
+
+    data = urllib.parse.urlencode(data)
+    print(data)
+    data = data.encode('ascii')
+    print(data)
+    add_req = urllib.request.Request(url_footlocker_addToCart_link, data, header_footlocker)
+    res = urllib.request.urlopen(add_req)
+    print(res.read().decode(res.headers.get_content_charset()))
+
+
