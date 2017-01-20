@@ -1,0 +1,128 @@
+var checkoutURL = 'https://www.footlocker.com/checkout/';
+√
+https://www.footlocker.com/checkout/?uri=checkout
+	var payPalURL = 'https://www.footlocker.com/checkout/paypalExpress.cfm';
+	var inventoryCheckTemplatePath = "/checkout/inventoryCheck.cfm";
+	var updateStatusTemplatePath = "/checkout/inventoryCheck.cfm?updateStatus=true";
+	var templatePath = "/checkout/outofstock.cfm";
+	var shippingRestrictionTemplate = "/checkout/shippingRestriction.cfm";
+	var shipFromStoreShippingRestrictionTemplate = "/checkout/shippingRestrictionSFS.cfm";
+	var orderSummaryTemplate = "/checkout/checkoutOrderMiniCart.cfm";\
+
+
+
+
+		<script type="text/javascript" src="/combine?type=js&files=shared/storepickup/modal.js,shared/storepickup/boris.js&locale=en_US&ver=v16_11.4.4-rc1&cd=1d"></script>
+
+
+	<script type="text/javascript">//<![CDATA[
+		var locale = 'en_US';
+		var sizeSearchActionURL = 'http://www.footlocker.com/includes/sizeSearchForm';
+
+		var premierBogoEnabled = true;
+		var premierBogoCalloutsEnabled = true;
+
+			var premierBogoDetails = {};
+
+
+
+
+
+
+
+function postsizesearch(frm, prod_tp){
+	ajax = getHTTPObject();
+	var actionURL = sizeSearchActionURL;
+	var frmValues = getFormValues(frm);
+   	postAjaxForm(frmValues, actionURL, function(){update_size_search(document.getElementById(prod_tp + '_size_search'))});
+}
+function getsizesearch(actionURL, prod_tp){
+	ajax = getHTTPObject();
+   	loadXMLDoc(actionURL, function(){update_size_search(document.getElementById(prod_tp + '_size_search'))});
+}
+function update_size_search(cont) {
+	var container = new Object();
+	container = cont;
+	switch (ajax.readyState) {
+		case 1:
+			break;
+		case 2:
+			break;
+		case 3:
+			break;
+		case 4:
+   			if (ajax.status != 200) return;
+			insertFragment(container,getFieldFromContent("content",ajax.responseText));
+	}
+}
+
+
+var model = {"ALLSKUS":["84664020","84664116"],"NBR":"137127","PRICERANGE":"$189.99 - $197.99","GENDER_AGE":"Men's","PRICEADJUSTDATE":"","AVAILABLE_SIZES":[" 08.0"," 08.5"," 09.5"," 10.0"," 10.5"," 11.0"," 11.5"," 12.0"," 13.0"," 14.0"],"DISCOUNT_PERCENT":"10","isFieldTestable":false,"SORT":"149","HASCUSTOMPRODUCTTEMPLATE":false,"PR_LIST":"219.99","SPORTS":[{"ID":"3","NM":"Basketball"},{"ID":"39","NM":"Casual"}],"SIZECHART_CD":"S0584","HASSIZES":true,"PR_SALE":"197.99","LOCALIZATION":{},"MODELTEMPLATE":{"ISMODELTEMPLATEACTIVE":"N","MODELTEMPLATE_IMAGE":""},"ISCUSTOMPRODUCT":false,"INTRODUCTIONDATE":"","SKU":"84664020","ISINTANGIBLE":false,"PROD_TP":"Shoes","CUSTPROD_CD":"","NM":"Jordan Retro 6 - Men's","REVIEWS":{"HASREVIEWS":true,"TOTALREVIEWCOUNT":"685","WEIGHTEDAVERAGERATING":"4.61","WEIGHTEDAVERAGERECOMMENDED":"651"},"BRAND":"Jordan","INET_COPY":"<p>In order to appreciate the Jordan Retro 6, you have to start at the beginning. It all started in 1991, when the original Air Jordan VI was released &ndash; it was the first Jordan with an internal bootie and it boasted a striking design, Porsche-inspired pull tab and Vis-Air&reg; unit. It was also the shoe MJ wore as he captured both the league and Finals MVP.<\/p> <ul> <li>This shoe comes specially packaged in a \"box within a box\" to keep the original box from being damaged and helps to keep it in \"collector's condition.\"<\/li> <li>The upper is a combination of leather and synthetics with perforated details and sleek designs throughout.<\/li> <li>The pull tab remains the same and the midsole cushioning provides comfort with polyurethane, a Vis-Air&reg; unit in the heel and an Air&reg; unit in the forefoot.<\/li> <li>The sole is comprised of solid and translucent rubber with a unique traction pattern for performance and style.<\/li> <li>Wt. 18.0 oz.<\/li> <\/ul>"};
+var model_137127 = model;
+var styles = {"84664116":["<span class='attType_color'>Off White\/New Maroon<\/span> | <span class='attType_width'>Width - D - Medium<\/span>",false,true,"","truesize.gif","219.99","197.99",[[" 11.0","219.99","197.99","Only In Store","N","N","N","888410241295;4104531004110","Y","Y"],[" 11.5","219.99","197.99","Only In Store","N","N","N","888410241301;4104531004115","Y","Y"],[" 12.0","219.99","197.99","Only In Store","N","N","N","888410241318;4104531004120","Y","Y"],[" 13.0","219.99","197.99","Only In Store","N","N","N","888410241332;4104531004130","Y","Y"],[" 14.0","219.99","197.99","Only In Store","N","N","N","888410241356;4104531004140","Y","Y"]],true,false,false,[],{"ELIGIBLE_SHIPTOSTORE":true,"PREMIER_BOGO":"","FREE_STANDARD_SHIPPING":false,"CHANNEL_AVAIL_ICON":"IN_STORE","SPECIFIC_PRODUCT_TYPE":"Casual Basketball Shoes"},"","","Off White\/New Maroon","Width - D - Medium","","","","","",false,false,"Off-White","Maroon",[],{}],"84664020":["<span class='attType_color'>Black\/Black\/White<\/span> | <span class='attType_width'>Width - D - Medium<\/span> | <span class='attType_short_dsc'>Limited to 1 Pair per Customer<\/span>",true,true,"","truesize.gif","189.99","189.99",[[" 08.0","189.99","189.99","","Y","N","N","883212504890;4106143204080","N","N"],[" 08.5","189.99","189.99","","Y","N","N","883212507488;4106143204085","N","N"],[" 09.5","189.99","189.99","","Y","N","N","883212512567;4106143204095","N","N"],[" 10.0","189.99","189.99","","Y","N","N","883212513083;4106143204100","N","N"],[" 10.5","189.99","189.99","","Y","N","N","883212513106;4106143204105","N","N"],[" 11.0","189.99","189.99","","Y","N","N","883212513120;4106143204110","N","N"],[" 11.5","189.99","189.99","","Y","N","N","883212513144;4106143204115","N","N"],[" 12.0","189.99","189.99","","Y","N","N","883212513168;4106143204120","N","N"]],true,false,false,[],{"ELIGIBLE_SHIPTOSTORE":true,"PRODUCT_TOP_SALES_AMOUNT":"596568.60","PRODUCT_RELEVANCE_RANKING":true,"PRODUCT_NEW_ARRIVAL_DATE":"01\/01\/2017","FREE_STANDARD_SHIPPING":true,"SPECIFIC_PRODUCT_TYPE":"Casual Basketball Shoes","PREMIER_BOGO":"","CHANNEL_AVAIL_ICON":"IN_STORE"},"","","Black\/Black\/White","Width - D - Medium","Limited to 1 Pair per Customer","","","0","FREE_STANDARD_SHIPPING",false,false,"Black","White",[[]],{}]};
+var styles_137127 = styles;
+
+
+
+
+document.getElementById and Ajax post
+
+The idea is that the link is above, actionURL
+And then use the postAjaxForm function to post it to the server ans then get the inventory?
+also not know what does document.getElement do, need to look into the destroyer file again
+
+loadXMLDoc(actionURL, function(){update_size_search(document.getElementById(prod_tp + '_size_search'))});
+This means the following things:
+
+sizeSearchActionURL = 'http://www.footlocker.com/includes/sizeSearchForm';
+
+http://www.footlocker.com/combine?type=js&files=shared/tipped/tipped.js,shared/scripts/jquery.bgiframe.pack.js,
+shared/scripts/ajax.js,shared/scripts/common.js,shared/search/scripts/sizesearch.js&locale=en_US&ver=v16_11.4
+.4-rc1&cd=1d ---------> This link is to get all the js files
+
+http://www.footlocker.com/combine?type=js&files=shared/tipped/tipped.js
+http://www.footlocker.com/combine?type=js&files=shared/scripts/jquery.bgiframe.pack.js
+http://www.footlocker.com/combine?type=js&files=shared/scripts/ajax.js,shared/scripts/common.js
+http://www.footlocker.com/combine?type=js&files=shared/search/scripts/sizesearch.js&locale=en_US&ver=v16_11.4.4-rc1&cd=1d
+http://www.footlocker.com/combine?type=js&files=shared/inlineAddToCart/miniAddToCart.js
+http://www.footlocker.com/sdd/eligibility?action=ProductZipCode&sku=84664020&size=09.5 -----> check if the item
+satisfies "same day delivery"
+
+
+
+End_Url:
+http://www.footlocker.com/includes/sizeSearchForm +
+function(){update_size_search(document.getElementById(prod_tp + '_size_search'))} +
+&locale=en_US&ver=v16_11.4.4-rc1&cd=1d
+
+Inventory_url
+sizeSearchActionURL = 'http://www.footlocker.com/includes/sizeSearchForm';
+loadXMLDoc(actionURL, function(){update_size_search(document.getElementById(prod_tp + '_size_search'))})
+ajax.open("GET", url, true);
+prod_tp = "Shoes"?
+&rand=Math.random()*4
+ajax.open("POST",url,true);
+ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded; charset=UTF-8");
+what does this "document.getElementById(prod_tp + '_size_search')" return is big deal
+I still believe that the "_size_search" is a private property that I have no access to it, which means that I will
+not be able to finish this stock checker lol
+
+addToCart_url
+url: getEPSPrefix() + "/catalog/miniAddToCart.cfm?secure=" +  (location.protocol == 'https:' ? 1:0) + "&" + appendURL,
+
+
+view-source:http://www.footlocker.com/product/model:137127/sku:84664020/jordan-retro-6-mens/black/white/
+    //cmSetClientID("90101910",false,"rpt.footlocker.com","footlocker.com"); -------->Get the gif images maybe?
+
+
+I think this is very similar to the destroyer's request from demandware
+
+
+# http://www.adidas.com/on/demamdware.store/Sites-adidas-US-Site/en_US/Product-GetAvailableSizes?
+'http://www.adidas.com/on/demandware.store/Sites-adidas-US-Site/MLT/Product-GetVariants?pid=S79168
+
+# http://www.adidas.com/on/demamdware.store/Sites-adidas-US-Site/en_US/Product-GetAvailableSizes?
+'http://{0}-us-adidasgroup.demandware.net/s/adidas-{1}/dw/shop/v15_6/products/({2})'?client_id={3}&expand=availability,variations,prices'
+
+
+Give up......Too hard fml
