@@ -28,6 +28,13 @@ It is to post the request after opening the page and search out the requestKey
 
 Maybe cookie handler? may be it is. -> Yes, cookie can do the trick
 Maybe connection? session? -> This is using requests module, which I might learn later.
+
+possible checkout form
+Two more cookie keys: ORDERAUTH, CHECKOUT_SESSION
+https://www.footlocker.com/checkout/eventGateway?&method=validateShipMethodPane
+https://www.footlocker.com/checkout/eventGateway?&method=validateBillPane
+https://www.footlocker.com/checkout/eventGateway?&method=validatePaymentMethodPane
+https://www.footlocker.com/checkout/eventGateway?&method=validateReviewPane
 """
 
 
@@ -35,6 +42,7 @@ url_footlocker = "http://www.footlocker.com"
 url_footlocker_product_link = "http://www.footlocker.com/product/model:137127/sku:84664020/jordan-retro-6-mens/black/white/"
 url_footlocker_addToCart_link = "http://www.footlocker.com/catalog/miniAddToCart.cfm?secure=0&"
 url_footlocker_showCart_link = "http://www.footlocker.com/shoppingcart/default.cfm?"
+url_footlocker_checkout_link = "https://www.footlocker.com/checkout/?uri=checkout"
 
 user_Agent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/" \
              "55.0.2883.5 Safari/537.36"
@@ -100,13 +108,14 @@ else:
                  "&sameDayDeliveryConfig=false&sku={1}&the_model_nbr={2}&model_name={3}" \
                  "&skipISA=no&selectedPrice=%24{4}&qty=1&size={5}&fulfillmentType=SHIP_TO_HOME&storeNumber" \
                  "=00000&coreMetricsDo=true&coreMetricsCategory=Add+to+Wish+List+-+PDP&quantity=1&inlineAddToCart=1".\
-            format(requestKey[0], sku[0], model[0], name[0].replace(" ", "+"), price[0], size[0])
+            format(requestKey[0], "BA7748", 236754, name[0].replace(" ", "+"), price[0], "10.5")
         print(str(datetime.now()), "Successfully retrieve information")
         # create the cookie used to add to cart, from the product link
         cookie_product_link = ''
         for item in cookie_jar_product_link:
             cookie_product_link += item.name + '=' + item.value + ";"
         header_footlocker_add_link["Cookie"] = cookie_product_link
+        result_link = url_footlocker_addToCart_link + inline
         req_again = urllib.request.Request(url_footlocker_addToCart_link + inline, headers=header_footlocker_add_link)
 
         # create another cookieJar instance to handle after we add the item to cart
@@ -164,8 +173,12 @@ else:
             # It seems that this header doesn't work? Don't know why but the add to cart header worked
             header_footlocker_add_link["Cookie"] = cookie_addToCart
             req_third = urllib.request.Request(url_footlocker_showCart_link, headers=header_footlocker_add_link)
+            cookie_jar_showCart = http.cookiejar.CookieJar()
+            cookie_processor_showCart = urllib.request.HTTPCookieProcessor(cookie_jar_showCart)
+            opener_showCart = urllib.request.build_opener(cookie_processor_showCart)
             try:
-                res_third = urllib.request.urlopen(req_third)
+                # res_third = urllib.request.urlopen(req_third)
+                res_third = opener_showCart.open(req_third)
             except urllib.error.HTTPError as e:
                 print(str(datetime.now()), "Cannot show the cart")
                 print(str(datetime.now()), "reason:", e.reason, e.code)
@@ -173,59 +186,29 @@ else:
                 charset = res_third.headers.get_content_charset('utf-8')
                 read_third = decompress(res_third.read())
                 read_third = read_third.decode(charset)
-                '''pattern_all = re.compile("tagMgt.cart_lines = \[(.*?)\]", re.DOTALL)
-                match_all = re.findall(pattern_all, read_third)
-                print(match_all)'''
                 pattern_empty = re.compile("Your Cart is Empty")
                 match = re.findall(pattern_empty, read_third)
                 if match:
                     print("Adding to cart failed")
                 else:
-                    pattern_sku = re.compile("\"SKU\":(.*?),")
-                    pattern_size = re.compile("\"SIZE\":(.*?),")
-                    pattern_qty = re.compile("\"QTY\":(.*?),")
-                    pattern_cart_line_id = re.compile("\"LINEITEMID\":(.*?),")
-                    pattern_price = re.compile("\"PRICE\":(.*?),")
-                    pattern_name = re.compile("\"PRODUCTNAME\":(.*?),")
-                    pattern_model_bnr = re.compile("\"MODEL_NBR\":(.*?),")
                     print(str(datetime.now()), "In cart: ")
-                    print("sku:", re.findall(pattern_sku, read_third))
-                    print("model_nbr", re.findall(pattern_model_bnr, read_third))
-                    print("name:", re.findall(pattern_name, read_third))
-                    print("price:", re.findall(pattern_price, read_third))
-                    print("size:", re.findall(pattern_size, read_third))
-                    print("qty:", re.findall(pattern_qty, read_third))
-                    print("cart_line_id:", re.findall(pattern_cart_line_id, read_third))
-                    '''pattern_all = re.compile("cmCreateShopAction5Tag\((.*?),\t\"\"", re.DOTALL)
-                    match_all = re.findall(pattern_all, read_third)
-                    match_all = str(match_all[0]).replace("\n", '').replace("\t", '')
-                    match_all = str(match_all).split(",")
-                    print(str(datetime.now()), "In cart: ")
-                    print("sku: ", match_all[0])
-                    print("name: ", match_all[1])
-                    print("qty: ", match_all[2])
-                    print("price: ", match_all[3])
-                    # Maybe the cart_line_id will be useful?
-                    print(read_third)'''
-                    '''pattern_sku = re.compile("<input type=\"hidden\" name=\"sku\" value=\"(.*?)\"")
-                    pattern_size = re.compile("<input type=\"hidden\" name=\"size\" value=\"(.*?)\"")
-                    pattern_qty = re.compile("<input type=\"hidden\" name=\"qty\" value=\"(.*?)\"")
-                    pattern_cart_line_id = re.compile("<input type=\"hidden\" name=\"cart_line_id\" value=\"(.*?)\"")
-                    pattern_price = re.compile("<input type=\"hidden\" name=\"price\" value=\"(.*?)\"")
-                    match_sku = re.findall(pattern_sku, read_third)
-                    match_size = re.findall(pattern_size, read_third)
-                    match_qty = re.findall(pattern_qty, read_third)
-                    match_price = re.findall(pattern_price, read_third)
-                    # print(str(datetime.now()), "Cart content")
-                    print("sku: ", match_sku)
-                    print("size: ", match_size)
-                    print("qty: ", match_qty)
-                    print("price: ", match_price)'''
-
+                    # This below may or may not work. Depends on the form of the code of the cart page
+                    pattern = re.compile("\"LINEITEMID\":(.*?),.*?\"PRICE\":(.*?),.*?\"MODEL_NBR\":("
+                                         ".*?),.*?\"PRODUCTNAME\":(.*?),.*?\"QTY\":(.*?),.*?\"SKU\":("
+                                         ".*?),.*?\"SIZE\":(.*?),")
+                    result = re.findall(pattern, read_third)
+                    sku = result[0][5]
+                    model_nbr = result[0][2]
+                    product = result[0][3]
+                    size = result[0][6]
+                    qty = result[0][4]
+                    price = result[0][1]
+                    line_item_id = result[0][0]
+                    output = str("sku: {0}\nmodel_nbr: {1}\nproduct: {2}\nsize: {3}\nqty: {4}\nprice: {5}"
+                                 "\nline_item_id: {6}").format(sku, model_nbr, product, size, qty, price, line_item_id)
+                    print(output)
 
                     # The next step is to find out how to transfer out the cart so that I can use browser to open it
-                # And then find out the format for submitting the order for me
-                # And then stock checker
-                # Maybe transfer and then checker and the last is the atc
-                # Maybe how to search for the product link? link scraper?
+                    # And then find out the format for submitting the order for me
+                    # Maybe how to search for the product link? link scraper?
 

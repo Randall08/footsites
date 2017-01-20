@@ -1,0 +1,15 @@
+1.
+"AVAILABLE_SIZES" is not the actual available size. They are just the possible sizes.
+The AJ 6 RETRO (84664020) size 13 is disable but 13 still appear in the  "AVAILABLE_SIZES"
+
+2.
+http://www.footlocker.com/combine?type=js&files=shared/tipped/tipped.js
+http://www.footlocker.com/combine?type=js&files=shared/scripts/jquery.bgiframe.pack.js
+http://www.footlocker.com/combine?type=js&files=shared/scripts/ajax.js,shared/scripts/common.js
+http://www.footlocker.com/combine?type=js&files=shared/search/scripts/sizesearch.js&locale=en_US&ver=v16_11.4.4-rc1&cd=1d
+
+The "http://www.footlocker.com/combine?type=js&files" is used to get the js files from sever
+
+3.
+<script type=text/javascript src="/babsdbbasfbabsfb"></script>
+This is used to insert the javascript into the html file.

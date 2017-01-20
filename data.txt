@@ -64,29 +64,6 @@ var styles_137127 = styles;
 
 
 
-    cm_HOST = "rpt.footlocker.com" + "/eluminate?";
-</script>
-<script type="application/ld+json">
-{
-"@context": "http://schema.org",
-"@type": "Product",
-"name": "Nike KD 9 - Men's",
-"image": "//images.footlocker.com/pi/43392611/zoom/nike-kd-9-mens",
-"brand": "Nike",
-"model": "262605",
-"sku":"43392611",
-"url" : "http://footlocker.com/product/sku:43392611/",
-"itemCondition" : "NewCondition",
-    "offers": {
-    "@type": "Offer",
-    "price": 149.99,
-    "priceCurrency": "USD",
-    "seller": "Foot Locker",
-    "availability" : "InStock"
-    }
-}
-</script>
-
 
 document.getElementById and Ajax post
 
@@ -94,11 +71,58 @@ The idea is that the link is above, actionURL
 And then use the postAjaxForm function to post it to the server ans then get the inventory?
 also not know what does document.getElement do, need to look into the destroyer file again
 
+loadXMLDoc(actionURL, function(){update_size_search(document.getElementById(prod_tp + '_size_search'))});
+This means the following things:
+
+sizeSearchActionURL = 'http://www.footlocker.com/includes/sizeSearchForm';
+
 http://www.footlocker.com/combine?type=js&files=shared/tipped/tipped.js,shared/scripts/jquery.bgiframe.pack.js,
 shared/scripts/ajax.js,shared/scripts/common.js,shared/search/scripts/sizesearch.js&locale=en_US&ver=v16_11.4
-.4-rc1&cd=1d
+.4-rc1&cd=1d ---------> This link is to get all the js files
+
+http://www.footlocker.com/combine?type=js&files=shared/tipped/tipped.js
+http://www.footlocker.com/combine?type=js&files=shared/scripts/jquery.bgiframe.pack.js
+http://www.footlocker.com/combine?type=js&files=shared/scripts/ajax.js,shared/scripts/common.js
+http://www.footlocker.com/combine?type=js&files=shared/search/scripts/sizesearch.js&locale=en_US&ver=v16_11.4.4-rc1&cd=1d
+http://www.footlocker.com/combine?type=js&files=shared/inlineAddToCart/miniAddToCart.js
+http://www.footlocker.com/sdd/eligibility?action=ProductZipCode&sku=84664020&size=09.5 -----> check if the item
+satisfies "same day delivery"
+
+
+
+End_Url:
+http://www.footlocker.com/includes/sizeSearchForm +
+function(){update_size_search(document.getElementById(prod_tp + '_size_search'))} +
+&locale=en_US&ver=v16_11.4.4-rc1&cd=1d
+
+Inventory_url
+sizeSearchActionURL = 'http://www.footlocker.com/includes/sizeSearchForm';
+loadXMLDoc(actionURL, function(){update_size_search(document.getElementById(prod_tp + '_size_search'))})
+ajax.open("GET", url, true);
+prod_tp = "Shoes"?
+&rand=Math.random()*4
+ajax.open("POST",url,true);
+ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded; charset=UTF-8");
+what does this "document.getElementById(prod_tp + '_size_search')" return is big deal
+I still believe that the "_size_search" is a private property that I have no access to it, which means that I will
+not be able to finish this stock checker lol
+
+addToCart_url
+url: getEPSPrefix() + "/catalog/miniAddToCart.cfm?secure=" +  (location.protocol == 'https:' ? 1:0) + "&" + appendURL,
+
+
+view-source:http://www.footlocker.com/product/model:137127/sku:84664020/jordan-retro-6-mens/black/white/
+    //cmSetClientID("90101910",false,"rpt.footlocker.com","footlocker.com"); -------->Get the gif images maybe?
+
 
 I think this is very similar to the destroyer's request from demandware
 
 
+# http://www.adidas.com/on/demamdware.store/Sites-adidas-US-Site/en_US/Product-GetAvailableSizes?
+'http://www.adidas.com/on/demandware.store/Sites-adidas-US-Site/MLT/Product-GetVariants?pid=S79168
 
+# http://www.adidas.com/on/demamdware.store/Sites-adidas-US-Site/en_US/Product-GetAvailableSizes?
+'http://{0}-us-adidasgroup.demandware.net/s/adidas-{1}/dw/shop/v15_6/products/({2})'?client_id={3}&expand=availability,variations,prices'
+
+
+Give up......Too hard fml
